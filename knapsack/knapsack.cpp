@@ -7,8 +7,8 @@ using ull = unsigned long long;
 // First element is weight, second element is value.
 using Item = std::pair<int, ull>; 
 
-// Time Complexity: O(items.size() * capacity)
-// Space Complexity: O(capacity)
+// Time complexity is O(items.size() * capacity),
+// auxiliary space is O(capacity).
 ull knapsack(std::vector<Item> &items, int capacity) {
     std::vector<ull> dp(capacity + 1, 0);
     for (int i = 1; i <= capacity; ++i) {
