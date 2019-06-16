@@ -33,7 +33,7 @@ std::vector<Item> _knapsack_bitdp(ItemIterator first, ItemIterator last, ull cap
 // auxiliary space is O(m * log(m)),
 // where n = items.size(),
 //       m = pow(2, n / 2).
-ull knapsack(std::vector<Item> &items, ull capacity) {
+ull knapsack_small_items(std::vector<Item> &items, ull capacity) {
     int n = items.size();
     std::vector<Item> a1 = _knapsack_bitdp(items.begin(), items.begin() + n / 2, capacity);
     std::vector<Item> a2 = _knapsack_bitdp(items.begin() + n / 2, items.end(), capacity);
