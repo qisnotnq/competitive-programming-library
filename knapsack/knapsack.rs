@@ -3,7 +3,7 @@
 //
 // Time Complexity: O(items.size() * capacity)
 // Space Complexity: O(capacity)
-fn knapsack(items: &[(usize, u64)], capacity: usize) -> u64 {
+pub fn knapsack(items: &[(usize, u64)], capacity: usize) -> u64 {
     let mut dp = vec![0; capacity + 1];
     for i in 1..=capacity {
         for &(weight, value) in items {
