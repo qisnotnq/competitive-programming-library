@@ -1,8 +1,8 @@
 // Item is represented by (usize, u64).
 // First element is weight, second element is value.
 //
-// Time Complexity: O(items.size() * capacity)
-// Space Complexity: O(capacity)
+// Time complexity is O(items.size() * capacity),
+// auxiliary space is O(capacity).
 pub fn knapsack(items: &[(usize, u64)], capacity: usize) -> u64 {
     let mut dp = vec![0; capacity + 1];
     for i in 1..capacity + 1 {
