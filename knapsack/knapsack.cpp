@@ -21,7 +21,3 @@ ull knapsack(std::vector<Item> &items, int capacity) {
     }
     return dp[capacity];
 }
-
-int main() {
-    return 0;
-}
