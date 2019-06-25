@@ -5,7 +5,7 @@ class modulo {
 public:
     T data;
 
-    modulo(T data) : data(data % M) {
+    modulo(T data = 0) : data(data % M) {
     }
 
     modulo operator+(const modulo &x) const {
@@ -21,7 +21,7 @@ public:
     }
 
     modulo operator/(const modulo &x) const {
-        return modulo(data * inv(x).data);
+        return modulo(data * x.inv().data);
     }
 
     modulo operator+=(const modulo &x) {
@@ -37,11 +37,11 @@ public:
     }
 
     modulo operator/=(const modulo &x) {
-        data = (data * inv(x).data) % M;
+        data = (data * x.inv().data) % M;
     }
 
-    modulo inv(const modulo &x) const {
-        return x._pow(M - 2);
+    modulo inv() const {
+        return _pow(M - 2);
     }
 
     template <class Integer>
