@@ -59,7 +59,7 @@ public:
     }
 
 private:
-    template<class NonNegativeInteger>
+    template <class NonNegativeInteger>
     modulo _pow(NonNegativeInteger n) const {
         modulo result(1);
         modulo x(*this);
