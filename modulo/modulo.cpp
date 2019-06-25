@@ -73,18 +73,3 @@ private:
         return result;
     }
 };
-
-int main() {
-    using namespace std;
-
-    using M = modulo<int, 29>;
-    for (int i = 0; i < 20; ++i) {
-        M x = M(3) ^ i;
-        M y = M(3) ^ (-i);
-        cout << 3 << "^" << i << " = " << x << endl;
-        cout << 3 << "^(" << (-i) << ") = " << y << endl;
-        cout << "x * y = " << (x * y) << endl;
-    }
-
-    return 0;
-}
