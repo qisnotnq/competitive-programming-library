@@ -46,7 +46,7 @@ ull knapsack_small_items(std::vector<Item> &items, ull capacity) {
     }
  
     ull result = 0;
-    for (Item item: a1) {
+    for (const Item &item: a1) {
         ull weight1 = item.first;
         ull value1 = item.second;
         ull value2 = acc_max_value[distance(a2.begin(), upper_bound(a2.begin(), a2.end(), Item(capacity - weight1, ULLONG_MAX)))];
