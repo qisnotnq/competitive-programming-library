@@ -1,4 +1,4 @@
-#include <algorithm> // std::max
+#include <algorithm> // std::max, std::min
 #include <utility> // std::pair
 #include <vector> // std::vector
 
