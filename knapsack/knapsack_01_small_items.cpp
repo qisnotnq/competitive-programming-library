@@ -16,7 +16,7 @@ std::vector<Item> _knapsack_bitdp(ItemIterator first, ItemIterator last, ull cap
     for (int b = 0; b < (1 << n); ++b) {
         ull sum_value = 0;
         ull sum_weight = 0;
-        for (int i = 0; i < b; ++i) {
+        for (int i = 0; i < n; ++i) {
             if (b & (1 << i)) {
                 sum_weight += (*(first + i)).first;
                 sum_value += (*(first + i)).second;
