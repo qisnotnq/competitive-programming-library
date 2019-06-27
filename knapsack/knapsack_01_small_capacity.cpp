@@ -8,7 +8,7 @@ using ull = unsigned long long;
 using Item = std::pair<int, ull>;
 
 // Time complexity is O(n * W),
-// auxiliary space is O(n * W),
+// auxiliary space is O(W),
 // where n = items.size(),
 //       W = min(capacity, sum(weight)).
 ull knapsack_01_small_capacity(const std::vector<Item> &items, int capacity) {
@@ -18,15 +18,11 @@ ull knapsack_01_small_capacity(const std::vector<Item> &items, int capacity) {
         weight_sum += item.first;
     }
     int W = std::min(capacity, weight_sum);
-    std::vector<std::vector<ull>> dp(n + 1, std::vector<ull>(W + 1, 0));
-    for (int i = 1; i <= n; ++i) {
-        for (int w = 0; w <= W; ++w) {
-            if (items[i - 1].first <= w) {
-                dp[i][w] = std::max(dp[i - 1][w], dp[i - 1][w - items[i - 1].first] + items[i - 1].second);
-            } else {
-                dp[i][w] = dp[i - 1][w];
-            }
+    std::vector<ull> dp(W + 1, 0);
+    for (const Item &item: items) {
+        for (int w = W; w >= item.first; --w) {
+            dp[w] = std::max(dp[w], dp[w - item.first] + item.second);
         }
     }
-    return dp[n][W];
+    return dp[W];
 }
