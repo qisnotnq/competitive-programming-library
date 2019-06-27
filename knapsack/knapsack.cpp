@@ -1,6 +1,6 @@
-#include <algorithm> // max
-#include <utility> // pair
-#include <vector> // vector
+#include <algorithm> // std::max
+#include <utility> // std::pair
+#include <vector> // std::vector
 
 using ull = unsigned long long;
 
