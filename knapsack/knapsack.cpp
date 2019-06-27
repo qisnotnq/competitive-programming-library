@@ -9,7 +9,7 @@ using Item = std::pair<int, ull>;
 
 // Time complexity is O(items.size() * capacity),
 // auxiliary space is O(capacity).
-ull knapsack(std::vector<Item> &items, int capacity) {
+ull knapsack(const std::vector<Item> &items, int capacity) {
     std::vector<ull> dp(capacity + 1, 0);
     for (int i = 1; i <= capacity; ++i) {
         for (const Item &item: items) {

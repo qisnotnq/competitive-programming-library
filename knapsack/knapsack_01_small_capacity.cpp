@@ -11,7 +11,7 @@ using Item = std::pair<int, ull>;
 // auxiliary space is O(n * W),
 // where n = items.size(),
 //       W = min(capacity, sum(weight)).
-ull knapsack_01_small_capacity(std::vector<Item> &items, int capacity) {
+ull knapsack_01_small_capacity(const std::vector<Item> &items, int capacity) {
     int n = items.size();
     int weight_sum = 0;
     for (const Item &item: items) {
