@@ -25,19 +25,19 @@ public:
     }
 
     modulo operator+=(const modulo &x) {
-        data = (data + x.data) % M;
+        return data = (data + x.data) % M;
     }
 
     modulo operator-=(const modulo &x) {
-        data = (data + (M - x.data)) % M;
+        return data = (data + (M - x.data)) % M;
     }
 
     modulo operator*=(const modulo &x) {
-        data = (data * x.data) % M;
+        return data = (data * x.data) % M;
     }
 
     modulo operator/=(const modulo &x) {
-        data = (data * x.inv().data) % M;
+        return data = (data * x.inv().data) % M;
     }
 
     modulo inv() const {
