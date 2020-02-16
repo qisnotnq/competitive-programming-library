@@ -1,7 +1,10 @@
-#include <vector> // std::vector
 #include <queue> // std::queue
+#include <vector> // std::vector
 
-// time complexity: O(V + E)
+// if g has a cycle, return empty vector.
+// Time complexity is O(V + E),
+// where V is the number of vertices,
+//       E is the number of edges.
 template <class Graph>
 std::vector<size_t> topological_sort(const Graph &g) {
 
