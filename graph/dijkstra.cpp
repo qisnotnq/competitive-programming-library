@@ -1,5 +1,6 @@
 #include <functional> // std::greater
 #include <queue> // std::priority_queue
+#include <tuple> // std::tie
 #include <utility> // std::pair
 #include <vector> // std::vector
 
@@ -22,7 +23,7 @@ std::vector<non_standard<typename Graph::edge_type::weight_type>> dijkstra(const
     while (!q.empty()) {
         Weight w0;
         size_t v0;
-        tie(w0, v0) = q.top();
+        std::tie(w0, v0) = q.top();
         q.pop();
 
         if (dp[v0].value < w0)
