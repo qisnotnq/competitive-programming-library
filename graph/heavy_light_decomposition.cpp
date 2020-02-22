@@ -48,9 +48,9 @@ struct heavy_light_decomposition {
     vector<int> head;
     vector<int> pos;
     vector<int> depth;
-    segment_tree<Weight> st;
+    segment_tree<Weight> seg_tree;
 
-    heavy_light_decomposition(const Graph &g, int root) : n_vertices(g.n_vertices()), m_root(root) {
+    heavy_light_decomposition(const Graph &g, int root) : n_vertices(g.n_vertices()), m_root(root), seg_tree(n_vertices, 0, [](Weight x, Weight y) { return max(x, y); }) {
 
         cout << "heavylieght called" << endl;
         sizes.resize(n_vertices);
@@ -58,6 +58,7 @@ struct heavy_light_decomposition {
         head.resize(n_vertices);
         pos.resize(n_vertices);
         depth.resize(n_vertices);
+        //seg_tree = segment_tree<Weight>(n_vertices, 0, [](Weight x, Weight y) { return max(x, y); });
 
 
         function<void(int, int)> dfs = [&](int v, int parent) {
@@ -125,3 +126,25 @@ struct heavy_light_decomposition {
         }
     }
 };
+
+int main() {
+
+    using Graph = graph<edge>;
+
+    int N;
+    cin >> N;
+    Graph g(N);
+    for (int i = 0; i < N - 1; ++i) {
+        int k;
+        cin >> k;
+        REP(j, k) {
+            int child;
+            cin >> child;
+            g.make_edge(i, child);
+        }
+    }
+
+    heavy_light_decomposition<Graph>(g, 0);
+
+    return 0;
+}
