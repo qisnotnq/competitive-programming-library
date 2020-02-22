@@ -1,3 +1,6 @@
+#ifndef GRAPH_CPP
+#define GRAPH_CPP
+
 #include <iostream> // std::ostream
 #include <vector> // std::vector
 
@@ -62,32 +65,4 @@ struct graph {
     }
 };
 
-/*
-int main() {
-    cin.tie(0);
-    ios::sync_with_stdio(false);
-
-    using Edge = weighted_edge<ll>;
-    using Graph = graph<Edge>;
-
-    int V, E, r;
-    cin >> V >> E >> r;
-
-    Graph g(V);
-
-    REP(_, E) {
-        int s, t, d;
-        cin >> s >> t >> d;
-        g.make_edge(s, t, d);
-    }
-
-    auto dp = dijkstra(g, r);
-
-    REP(i, V) {
-        cout << dp[i] << '\n';
-    }
-    cout << flush;
-
-    return 0;
-}
-*/
+#endif // GRAPH_CPP
