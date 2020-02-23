@@ -11,8 +11,6 @@ struct heavy_light_decomposition {
     using Edge = typename Graph::edge_type;
     using Weight = typename Edge::weight_type;
 
-    size_t n_vertices;
-    size_t m_root;
     std::vector<size_t> branch_vertices;
     std::vector<size_t> pos;
     std::vector<size_t> pos_end;
@@ -20,7 +18,8 @@ struct heavy_light_decomposition {
     segment_tree<Weight> seg_tree;
     const size_t NIL;
 
-    heavy_light_decomposition(const Graph &g, size_t root) : n_vertices(g.n_vertices()), m_root(root), seg_tree(n_vertices, 0, [](Weight x, Weight y) { return x + y; }), NIL(n_vertices) {
+    heavy_light_decomposition(const Graph &g, size_t root) : seg_tree(g.n_vertices, 0, [](Weight x, Weight y) { return x + y; }), NIL(g.n_vertices) {
+        size_t n_vertices = g.n_vertices;
         std::vector<size_t> sizes(n_vertices);
         std::vector<size_t> heavy_children(n_vertices);
         branch_vertices.resize(n_vertices);
@@ -73,7 +72,7 @@ struct heavy_light_decomposition {
         seg_tree.update(pos[v], w);
     }
 
-    Weight query(size_t v) {
+    Weight query(size_t v) const {
         Weight result = 0;
         do {
             result += seg_tree.query(pos[v], pos_end[v]);
