@@ -1,7 +1,6 @@
 #ifndef SEGMENT_TREE_CPP
 #define SEGMENT_TREE_CPP
 
-#include <algorithm> // std::fill
 #include <functional> // std::function
 #include <vector> // std::vector
 
