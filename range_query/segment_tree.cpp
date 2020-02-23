@@ -3,6 +3,7 @@
 
 #include <algorithm> // std::fill
 #include <functional> // std::function
+#include <vector> // std::vector
 
 unsigned long long clp(unsigned long long x) {
     x -= 1;
@@ -26,7 +27,7 @@ private:
     const size_t n;
     const T UNIT;
     const std::function<T(const T&, const T&)> f;
-    vector<T> a;
+    std::vector<T> a;
 public:
     segment_tree(size_t size, T UNIT, std::function<T(const T&, const T&)> f) : n(clp(size)), UNIT(UNIT), f(f) {
         a.resize(2 * n - 1, UNIT);
