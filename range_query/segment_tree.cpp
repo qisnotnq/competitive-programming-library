@@ -1,3 +1,6 @@
+#ifndef SEGMENT_TREE_CPP
+#define SEGMENT_TREE_CPP
+
 #include <algorithm> // std::fill
 #include <functional> // std::function
 
@@ -23,11 +26,10 @@ private:
     const size_t n;
     const T UNIT;
     const std::function<T(const T&, const T&)> f;
-    T *a;
+    vector<T> a;
 public:
     segment_tree(size_t size, T UNIT, std::function<T(const T&, const T&)> f) : n(clp(size)), UNIT(UNIT), f(f) {
-        a = new T[2 * n - 1];
-        std::fill(a, a + 2 * n - 1, UNIT);
+        a.resize(2 * n - 1, UNIT);
     }
     /*
     template <class Iterator>
@@ -41,10 +43,6 @@ public:
         }
     }
     */
-    ~segment_tree() {
-        printf("~segment_tree() is called\n");
-        delete [] a;
-    }
 
     void update(size_t i, const T &x) {
         i += n - 1;
@@ -73,11 +71,4 @@ public:
     }
 };
 
-
-/*
-int main() {
-    int n = 100;
-    segment_tree<int> t(n, INT_MAX, [](int x, int y) {return min(x, y);});
-    return 0;
-}
-*/
+#endif // SEGMENT_TREE_CPP
