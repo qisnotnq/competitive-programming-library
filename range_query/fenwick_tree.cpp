@@ -12,29 +12,22 @@ private:
     const T unit;
     std::vector<T> a;
 public:
-    fenwick_tree(size_t n, std::function<T(T, T)>, T unit);
-    void update(size_t i, T x);
-    T query(size_t i) const;
+    fenwick_tree(size_t size, std::function<T(T, T)> f, T unit) : size(size), f(f), unit(unit), a(size, unit) { }
+
+    void update(size_t i, T x) {
+        for (size_t j = i; j < size; j |= j + 1) {
+            a[j] = f(a[j], x);
+        }
+    }
+
+    T query(size_t i) const {
+        T result = unit;
+        for (size_t j = i; j > 0; j = (j & (j + 1))) {
+            result = f(result, a[--j]);
+        }
+        return result;
+    }
 };
-
-template<class T>
-fenwick_tree<T>::fenwick_tree(size_t size, std::function<T(T, T)> f, T unit): size(size), f(f), unit(unit), a(size, unit) { }
-
-template<class T>
-void fenwick_tree<T>::update(size_t i, T x) {
-    for (size_t j = i; j < size; j |= j + 1) {
-        a[j] = f(a[j], x);
-    }
-}
-
-template<class T>
-T fenwick_tree<T>::query(size_t i) const {
-    T result = unit;
-    for (size_t j = i; j > 0; j = (j & (j + 1))) {
-        result = f(result, a[--j]);
-    }
-    return result;
-}
 
 template <class T>
 class range_add_sum_query {
