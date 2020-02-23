@@ -45,19 +45,19 @@ public:
     range_add_sum_query(size_t n) : fenwick_1(n + 1, [](T x, T y) { return x + y; }, 0),
                                     fenwick_2(n + 1, [](T x, T y) { return x + y; }, 0) { }
 
-    void range_add(size_t first, size_t last, T x) {
-        fenwick_1->update(first, x);
-        fenwick_1->update(last, -x);
-        fenwick_2->update(first, first * x);
-        fenwick_2->update(last, -last * x);
+    void update(size_t first, size_t last, T x) {
+        fenwick_1.update(first, x);
+        fenwick_1.update(last, -x);
+        fenwick_2.update(first, first * x);
+        fenwick_2.update(last, -last * x);
     }
 
-    T range_sum(size_t last) const {
-        return fenwick_1->query(last) * last - fenwick_2->query(last);
+    T query(size_t last) const {
+        return fenwick_1.query(last) * last - fenwick_2.query(last);
     }
 
-    T range_sum(size_t first, size_t last) const {
-        return range_sum(last) - range_sum(first);
+    T query(size_t first, size_t last) const {
+        return query(last) - query(first);
     }
 };
 
