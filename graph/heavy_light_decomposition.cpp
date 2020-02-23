@@ -1,59 +1,28 @@
-#include <bits/stdc++.h>
+#include <functional> // std::function
+#include <vector> // std::vector
 
 #include "graph.cpp"
 #include "range_query/segment_tree.cpp"
-
-#ifdef DEBUG
-#define PRINT(x)\
-    cout<<"func "<<__func__<<": line "<<__LINE__<<": "<<#x<<" = "<<(x)<<endl;
-#define PRINTA(a,first,last)\
-    cout<<"func "<<__func__<<": line "<<__LINE__<<": "<<#a<<"["<<(first)<<", "<<(last)<<")"<<endl;\
-    for (int i=(first);i<(last);++i){cout<<#a<<"["<<i<<"] = "<<(a)[i]<<endl;}
-#define PRINTP(p)\
-    cout<<"func "<<__func__<<": line "<<__LINE__<<": "<<#p<<" = ("<<(p.first)<<", "<<(p.second)<<")"<<endl;
-#define PRINTI(a,i)\
-    cout<<"func "<<__func__<<": line "<<__LINE__<<": "<<#a<<"["<<#i<<"] = "<<#a<<"["<<(i)<<"] = "<<(a)[i]<<endl;
-#else
-#define PRINT(x)
-#define PRINTA(a,first,last)
-#define PRINTP(p)
-#define PRINTI(a,i)
-#endif
-
-#define FOR(i,a,b) for (int i=(a);i<(b);++i)
-#define RFOR(i,a,b) for (int i=(b)-1;i>=(a);--i)
-#define REP(i,n) for (int i=0;i<(n);++i)
-#define RREP(i,n) for (int i=(n)-1;i>=0;--i)
-#define pb push_back
-#define mp make_pair
-#define all(a) (a).begin(),(a).end()
-#define rall(a) (a).rbegin(),(a).rend()
-#define MOD 1000000007
-
-using namespace std;
-
-using ll = long long;
-using ull = unsigned long long;
-using pii = pair<int, int>;
 
 template <class Graph>
 struct heavy_light_decomposition {
     using Edge = typename Graph::edge_type;
     using Weight = typename Edge::weight_type;
 
-    int n_vertices;
-    int m_root;
-    vector<int> sizes;
-    vector<int> heavy_children;
-    vector<int> branch_vertices;
-    vector<int> pos;
-    vector<int> pos_end;
-    vector<int> depth;
+    size_t n_vertices;
+    size_t m_root;
+    std::vector<size_t> sizes;
+    std::vector<size_t> heavy_children;
+    std::vector<size_t> branch_vertices;
+    std::vector<size_t> pos;
+    std::vector<size_t> pos_end;
+    std::vector<size_t> depth;
     segment_tree<Weight> seg_tree;
+    const size_t NIL;
 
-    heavy_light_decomposition(const Graph &g, int root) : n_vertices(g.n_vertices()), m_root(root) , seg_tree(n_vertices, 0, [](Weight x, Weight y) { return x + y; }) {
+    heavy_light_decomposition(const Graph &g, size_t root) : n_vertices(g.n_vertices()), m_root(root) , seg_tree(n_vertices, 0, [](Weight x, Weight y) { return x + y; }), NIL(n_vertices) {
 
-        cout << "heavylieght called" << endl;
+        //cout << "heavylieght called" << endl;
         sizes.resize(n_vertices);
         heavy_children.resize(n_vertices);
         branch_vertices.resize(n_vertices);
@@ -61,16 +30,16 @@ struct heavy_light_decomposition {
         pos_end.resize(n_vertices);
         depth.resize(n_vertices);
 
-        function<void(int, int)> dfs = [&](int v, int parent) {
+        std::function<size_t(size_t, size_t)> dfs = [&](size_t v, size_t parent) {
 
-            printf("dfs(%d, %d) is called\n", v, parent);
+            //printf("dfs(%d, %d) is called\n", v, parent);
 
             sizes[v] = 1;
-            heavy_children[v] = -1;
-            int child_size_max = -1;
+            heavy_children[v] = NIL;
+            size_t child_size_max = 0;
 
             for (const Edge &e: g.edges_from(v)) {
-                int child = e.to();
+                size_t child = e.to();
 
                 if (child == parent) continue;
                 
@@ -87,20 +56,20 @@ struct heavy_light_decomposition {
             return sizes[v];
         };
 
-        dfs(root, -1);
+        dfs(root, NIL);
 
-        int cur_pos = n_vertices;
+        size_t cur_pos = n_vertices;
 
-        function<void(int, int, int, int)> decompose = [&](int v, int parent, int bv, int ep) {
-            printf("decompose(%d, parent=%d, branch_vertices=%d) is called\n", v, parent, bv);
+        std::function<void(size_t, size_t, size_t, size_t)> decompose = [&](size_t v, size_t parent, size_t bv, size_t ep) {
+            //printf("decompose(%d, parent=%d, branch_vertices=%d) is called\n", v, parent, bv);
             branch_vertices[v] = bv;
             pos[v] = --cur_pos;
             pos_end[v] = ep;
-            if (heavy_children[v] != -1) {
+            if (heavy_children[v] != NIL) {
                 decompose(heavy_children[v], v, bv, ep);
             }
             for (const Edge &e: g.edges_from(v)) {
-                int child = e.to();
+                size_t child = e.to();
 
                 if (child != parent && child != heavy_children[v]) {
                     decompose(child, v, v, cur_pos);
@@ -110,6 +79,7 @@ struct heavy_light_decomposition {
 
         decompose(root, n_vertices, n_vertices, n_vertices);
 
+        /*
         REP(i, n_vertices) {
             printf("sizes[%d] = %d\n", i, sizes[i]);
         }
@@ -129,23 +99,20 @@ struct heavy_light_decomposition {
         REP(i, n_vertices) {
             printf("pos_end[%d] = %d\n", i, pos_end[i]);
         }
+        */
     }
 
-    ~heavy_light_decomposition() {
-        printf("~heavy_light_decomposition() is called\n");
-    }
-
-    void update(int v, Weight w) {
-        printf("update vertex v = %d, pos[v] = %d\n", v, pos[v]);
+    void update(size_t v, Weight w) {
+        //printf("update vertex v = %d, pos[v] = %d\n", v, pos[v]);
         seg_tree.update(pos[v], w);
     }
 
-    Weight query(int v) {
+    Weight query(size_t v) {
         Weight result = 0;
         do {
-            printf("vertex %d to %d, segment [%d, %d)\n", v, branch_vertices[v], pos[v], pos_end[v]);
+            //printf("vertex %d to %d, segment [%d, %d)\n", v, branch_vertices[v], pos[v], pos_end[v]);
             result += seg_tree.query(pos[v], pos_end[v]);
-        } while ((v = branch_vertices[v]) != n_vertices);
+        } while ((v = branch_vertices[v]) != NIL);
         return result;
     }
 };
