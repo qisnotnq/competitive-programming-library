@@ -1,6 +1,5 @@
-#include <bits/stdc++.h>
-
-using namespace std;
+#include <algorithm> // std::fill
+#include <functional> // std::function
 
 unsigned long long clp(unsigned long long x) {
     x -= 1;
@@ -23,28 +22,30 @@ class segment_tree {
 private:
     const size_t n;
     const T UNIT;
-    const function<T(const T&, const T&)> f;
+    const std::function<T(const T&, const T&)> f;
     T *a;
 public:
-    segment_tree(size_t size, T UNIT, function<T(const T&, const T&)> f) : n(clp(size)), UNIT(UNIT), f(f) {
+    segment_tree(size_t size, T UNIT, std::function<T(const T&, const T&)> f) : n(clp(size)), UNIT(UNIT), f(f) {
+        a = new T[2 * n - 1];
+        std::fill(a, a + 2 * n - 1, UNIT);
+    }
+    /*
+    template <class Iterator>
+    segment_tree(Iterator first, Iterator last, int UNIT, function<T(T, T)> f) : n(clp(distance(first, last))), UNIT(UNIT), f(f)
+    {
+        size_t size = distance(first, last);
         a = new T[2 * n - 1];
         fill(a, a + 2 * n - 1, UNIT);
-    }
-        /*
-        template <class Iterator>
-        segment_tree(Iterator first, Iterator last, int UNIT, function<T(T, T)> f) : n(clp(distance(first, last))), UNIT(UNIT), f(f)
-        {
-            size_t size = distance(first, last);
-            a = new T[2 * n - 1];
-            fill(a, a + 2 * n - 1, UNIT);
-            for (size_t i = 0; i < size; ++i) {
-                a[n - 1 + i] = *(first + i);
-            }
+        for (size_t i = 0; i < size; ++i) {
+            a[n - 1 + i] = *(first + i);
         }
-        */
+    }
+    */
     ~segment_tree() {
+        printf("~segment_tree() is called\n");
         delete [] a;
     }
+
     void update(size_t i, const T &x) {
         i += n - 1;
         a[i] = x;
@@ -53,6 +54,7 @@ public:
             a[i] = f(a[2 * i + 1], a[2 * i + 2]);
         }
     }
+
     T query(size_t query_first, size_t query_last, size_t k = 0, size_t node_first = 0, size_t node_last = 0) const {
         if (k == 0) {
             node_last = n;
@@ -73,11 +75,9 @@ public:
 
 
 /*
-int main(void)
-{
+int main() {
     int n = 100;
     segment_tree<int> t(n, INT_MAX, [](int x, int y) {return min(x, y);});
     return 0;
 }
-
 */
