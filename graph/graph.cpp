@@ -23,7 +23,7 @@ struct edge {
 
 template <typename Weight>
 struct weighted_edge : public edge {
-    typedef Weight weight_type;
+    using weight_type = Weight;
 
     weight_type m_weight;
 
@@ -39,25 +39,35 @@ struct weighted_edge : public edge {
 
 template <class Edge>
 struct graph {
-    typedef Edge edge_type;
+    using edge_type = Edge;
 
-    size_t m_n_vertices;
+    const size_t m_n_vertices;
     std::vector<std::vector<edge_type>> m_edges;
 
     graph(size_t n_vertices) : m_n_vertices(n_vertices), m_edges(n_vertices) { }
 
     inline size_t n_vertices() const { return m_n_vertices; }
 
-    inline void make_edge(size_t from, size_t to, typename edge_type::weight_type weight) {
-        m_edges[from].emplace_back(edge_type(to, weight));
+    inline void add_edge(size_t from, size_t to, typename edge_type::weight_type weight) {
+        m_edges[from].emplace_back(to, weight);
     }
 
-    inline void make_edge(size_t from, size_t to) {
-        m_edges[from].emplace_back(edge(to));
+    inline void add_edge(size_t from, size_t to) {
+        m_edges[from].push_back(to);
     }
 
-    inline void make_edge(size_t from, const edge_type &e) {
+    inline void add_edge(size_t from, const edge_type &e) {
         m_edges[from].emplace_back(e);
+    }
+
+    inline void add_biedge(size_t v0, size_t v1, typename edge_type::weight_type weight) {
+        m_edges[v0].emplace_back(v1, weight);
+        m_edges[v1].emplace_back(v0, weight);
+    }
+
+    inline void add_biedge(size_t v0, size_t v1) {
+        m_edges[v0].push_back(v1);
+        m_edges[v1].push_back(v0);
     }
 
     inline std::vector<edge_type> edges_from(size_t v) const {
