@@ -5,7 +5,7 @@
 #include <vector> // std::vector
 
 template <class T>
-std::vector<size_t> argsort(std::vector<T> &a) {
+std::vector<size_t> argsort(const std::vector<T> &a) {
     std::vector<size_t> result(a.size());
     for (size_t i = 0; i < result.size(); ++i) {
         result[i] = i;
