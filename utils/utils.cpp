@@ -2,6 +2,7 @@
 #define UTILS_CPP
 
 #include <algorithm> // std::sort
+#include <stdexcept> // std::runtime_error
 #include <vector> // std::vector
 
 template <class T>
@@ -31,8 +32,12 @@ long long ceil_div(long long a, long long b) {
             return ((-a) + (-b) - 1) / (-b);
         }
     } else {
-        throw runtime_error("division by zero");
+        throw std::runtime_error("division by zero");
     }
+}
+
+long long floor_div(long long a, long long b) {
+    return -ceil_div(-a, b);
 }
 
 #endif // UTILS_CPP
