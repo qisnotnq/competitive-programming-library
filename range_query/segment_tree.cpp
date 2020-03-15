@@ -28,7 +28,7 @@ private:
     const std::function<T(const T&, const T&)> f;
     std::vector<T> a;
 public:
-    segment_tree(size_t size, T UNIT, std::function<T(const T&, const T&)> f) : n(clp(size)), UNIT(UNIT), f(f) {
+    segment_tree(size_t size, std::function<T(const T&, const T&)> f, T UNIT) : n(clp(size)), UNIT(UNIT), f(f) {
         a.resize(2 * n - 1, UNIT);
     }
     /*

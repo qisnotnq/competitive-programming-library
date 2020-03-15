@@ -18,7 +18,7 @@ struct heavy_light_decomposition {
     segment_tree<Weight> seg_tree;
     const size_t NIL;
 
-    heavy_light_decomposition(const Graph &g, size_t root) : seg_tree(g.n_vertices, 0, [](Weight x, Weight y) { return x + y; }), NIL(g.n_vertices) {
+    heavy_light_decomposition(const Graph &g, size_t root) : seg_tree(g.n_vertices, [](Weight x, Weight y) { return x + y; }, 0), NIL(g.n_vertices) {
         size_t n_vertices = g.n_vertices;
         std::vector<size_t> sizes(n_vertices);
         std::vector<size_t> heavy_children(n_vertices);
