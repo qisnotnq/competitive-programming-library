@@ -20,6 +20,7 @@ unsigned long long inversion_number(Iterator first, Iterator last) {
     std::vector<size_t> a = argsort(std::vector<size_t>(first, last));
     unsigned long long result = 0;
     fenwick_tree<size_t> range_sum_query(n, [](size_t x, size_t y) { return x + y; }, 0);
+    for (auto it = a.rbegin(); it != a.rend(); ++it) {
         result += range_sum_query.query(*it);
         range_sum_query.update(*it, 1);
     }
