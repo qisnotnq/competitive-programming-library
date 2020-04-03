@@ -5,6 +5,15 @@ std::vector<size_t> knuth_morris_pratt(const String &text, const String &pattern
 
     const size_t N = text.size();
     const size_t M = pattern.size();
+
+    if (M == 0) {
+        std::vector<size_t> result(N + 1);
+        for (size_t i = 0; i <= N; ++i) {
+            result[i] = i;
+        }
+        return result;
+    }
+
     int i, j;
 
     // lps[i] is the length of the longest proper prefix and suffix of pattern[:i + 1].
