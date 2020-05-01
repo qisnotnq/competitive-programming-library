@@ -1,6 +1,8 @@
 #include <vector> // std::vector
 
 
+// Time complexity is O(N^2 * 2^N),
+// where N is the number of vertices of graph g.
 template <class AdjancencyMatrix>
 std::vector<size_t> maximum_clique(const AdjancencyMatrix &g) {
 
