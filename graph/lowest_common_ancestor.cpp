@@ -4,7 +4,7 @@
 // N > 1
 class lowest_common_ancestor {
 
-    size_t log2_max_height; // floor(log2(max_height))
+    size_t log2_N; // ceil(log2(N))
     std::vector<std::vector<size_t>> parent;
     std::vector<size_t> depth;
 
@@ -26,10 +26,9 @@ public:
         using Edge = typename Graph::edge_type;
 
         size_t N = g.n_vertices();
-        size_t max_height = N - 1;
-        log2_max_height = 32 - __builtin_clz(max_height);
+        log2_N = 32 - __builtin_clz(N - 1);
         
-        parent.assign(N, std::vector<size_t>(log2_max_height));
+        parent.assign(N, std::vector<size_t>(log2_N));
         depth.resize(N);
 
         std::function<void(int, int)> dfs = [&](int u, int p) {
@@ -48,7 +47,7 @@ public:
         depth[root] = 0;
         dfs(root, root);
 
-        for (size_t i = 1; i < log2_max_height; ++i) {
+        for (size_t i = 1; i < log2_N; ++i) {
             for (size_t u = 0; u < N; ++u) {
                 parent[u][i] = parent[parent[u][i - 1]][i - 1];
             }
@@ -64,7 +63,7 @@ public:
         if (u == v) {
             return u;
         }
-        for (int i = log2_max_height - 1; i >= 0; --i) {
+        for (int i = log2_N - 1; i >= 0; --i) {
             if (parent[u][i] != parent[v][i]) {
                 u = parent[u][i];
                 v = parent[v][i];
