@@ -134,6 +134,8 @@ struct combinatorics {
     Mod C(T n, T k) {
         if (0 <= k && k <= n) {
             return factorial[n] * inv_factorial[k] * inv_factorial[n - k];
+        } else if (n == -1 && k == 0) { // conventinal
+            return 1;
         } else {
             return 0;
         }
@@ -172,10 +174,15 @@ Mod twelvefold(ull n, ull m, map_condition condition, bool up_to_permutation_of_
         if (condition == NONE) {
             // pre O(n + m)
             // O(1)
+            // Note that if n == 0 and m == 0 then C(-1, 0) == 1.
             combinatorics<ull, MOD> c(n + m - 1);
             return c.C(n + m - 1, n); // H(m, n)
         } else if (condition == INJECTIVE) {
         } else if (condition == SURJECTIVE) {
+            // pre O(n)
+            // O(1)
+            combinatorics<ull, MOD> c(n - 1);
+            return c.C(n - 1, n - m);
         }
     } else if (!up_to_permutation_of_n && up_to_permutation_of_m) {
         if (condition == NONE) {
@@ -199,7 +206,7 @@ int main() {
 
     ull n, m;
     cin >> n >> m;
-    cout << twelvefold(n, m, NONE, true, false) << endl;
+    cout << twelvefold(n, m, SURJECTIVE, true, false) << endl;
 
     return 0;
 }
