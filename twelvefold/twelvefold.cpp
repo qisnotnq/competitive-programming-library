@@ -199,6 +199,7 @@ Mod twelvefold(ull n, ull m, map_condition condition, bool up_to_permutation_of_
     } else if (up_to_permutation_of_n && up_to_permutation_of_m) {
         if (condition == NONE) {
         } else if (condition == INJECTIVE) {
+            return n <= m;
         } else if (condition == SURJECTIVE) {
         }
     }
@@ -212,7 +213,7 @@ int main() {
 
     ull n, m;
     cin >> n >> m;
-    cout << twelvefold(n, m, INJECTIVE, false, true) << endl;
+    cout << twelvefold(n, m, INJECTIVE, true, true) << endl;
 
     return 0;
 }
