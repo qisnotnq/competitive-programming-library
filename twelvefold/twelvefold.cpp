@@ -212,6 +212,13 @@ Mod twelvefold(ull n, ull m, map_condition condition, bool up_to_permutation_of_
         } else if (condition == INJECTIVE) {
             return n <= m;
         } else if (condition == SURJECTIVE) {
+            // pre O((n - m) * min(n - m, m))
+            // O(1)
+            if (n >= m) {
+                return twelvefold(n - m, m, NONE, true, true);
+            } else {
+                return 0;
+            }
         }
     }
     assert(0);
@@ -224,7 +231,7 @@ int main() {
 
     ull n, m;
     cin >> n >> m;
-    cout << twelvefold(n, m, NONE, true, true) << endl;
+    cout << twelvefold(n, m, SURJECTIVE, true, true) << endl;
 
     return 0;
 }
