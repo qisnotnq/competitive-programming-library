@@ -157,18 +157,35 @@ enum map_condition {
 using Mod = modulo<ull, MOD>;
 
 Mod twelvefold(ull n, ull m, map_condition condition, bool up_to_permutation_of_n, bool up_to_permutation_of_m) {
-
-    if (up_to_permutation_of_n && up_to_permutation_of_m) {
-    } else if (up_to_permutation_of_n && !up_to_permutation_of_m) {
-    } else if (!up_to_permutation_of_n && up_to_permutation_of_m) {
-    } else if (!up_to_permutation_of_n && !up_to_permutation_of_m) {
+    if (!up_to_permutation_of_n && !up_to_permutation_of_m) {
         if (condition == NONE) {
             // O(log(n))
             return Mod(m) ^ n;
         } else if (condition == INJECTIVE) {
-            // O(m)
+            // pre O(m)
+            // O(1)
             combinatorics<ull, MOD> c(m);
             return c.P(m, m - n);
+        } else if (condition == SURJECTIVE) {
+        }
+    } else if (up_to_permutation_of_n && !up_to_permutation_of_m) {
+        if (condition == NONE) {
+            // pre O(n + m)
+            // O(1)
+            combinatorics<ull, MOD> c(n + m - 1);
+            return c.C(n + m - 1, n); // H(m, n)
+        } else if (condition == INJECTIVE) {
+        } else if (condition == SURJECTIVE) {
+        }
+    } else if (!up_to_permutation_of_n && up_to_permutation_of_m) {
+        if (condition == NONE) {
+
+        } else if (condition == INJECTIVE) {
+        } else if (condition == SURJECTIVE) {
+        }
+    } else if (up_to_permutation_of_n && up_to_permutation_of_m) {
+        if (condition == NONE) {
+        } else if (condition == INJECTIVE) {
         } else if (condition == SURJECTIVE) {
         }
     }
@@ -182,7 +199,7 @@ int main() {
 
     ull n, m;
     cin >> n >> m;
-    cout << twelvefold(n, m, INJECTIVE, false, false) << endl;
+    cout << twelvefold(n, m, NONE, true, false) << endl;
 
     return 0;
 }
