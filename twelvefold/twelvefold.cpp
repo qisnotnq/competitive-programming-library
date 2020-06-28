@@ -21,12 +21,9 @@
 #define RFOR(i,a,b) for (int i=(b)-1;i>=(a);--i)
 #define REP(i,n) for (int i=0;i<(n);++i)
 #define RREP(i,n) for (int i=(n)-1;i>=0;--i)
-#define pb push_back
-#define mp make_pair
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define MOD 1000000007
-//#define MOD 998244353
 
 using namespace std;
 
@@ -169,6 +166,9 @@ Mod twelvefold(ull n, ull m, map_condition condition, bool up_to_permutation_of_
             // O(log(n))
             return Mod(m) ^ n;
         } else if (condition == INJECTIVE) {
+            // O(m)
+            combinatorics<ull, MOD> c(m);
+            return c.P(m, m - n);
         } else if (condition == SURJECTIVE) {
         }
     }
@@ -182,7 +182,7 @@ int main() {
 
     ull n, m;
     cin >> n >> m;
-    cout << twelvefold(n, m, NONE, false, false) << endl;
+    cout << twelvefold(n, m, INJECTIVE, false, false) << endl;
 
     return 0;
 }
