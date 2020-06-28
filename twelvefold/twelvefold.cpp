@@ -178,9 +178,14 @@ Mod twelvefold(ull n, ull m, map_condition condition, bool up_to_permutation_of_
             combinatorics<ull, MOD> c(n + m - 1);
             return c.C(n + m - 1, n); // H(m, n)
         } else if (condition == INJECTIVE) {
+            // pre O(m)
+            // O(1)
+            combinatorics<ull, MOD> c(m);
+            return c.C(m, n);
         } else if (condition == SURJECTIVE) {
             // pre O(n)
             // O(1)
+            // Note that if n == 0 and m == 0 then C(-1, 0) == 1.
             combinatorics<ull, MOD> c(n - 1);
             return c.C(n - 1, n - m);
         }
@@ -206,7 +211,7 @@ int main() {
 
     ull n, m;
     cin >> n >> m;
-    cout << twelvefold(n, m, SURJECTIVE, true, false) << endl;
+    cout << twelvefold(n, m, INJECTIVE, true, false) << endl;
 
     return 0;
 }
