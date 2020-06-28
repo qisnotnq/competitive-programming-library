@@ -198,18 +198,15 @@ Mod twelvefold(ull n, ull m, map_condition condition, bool up_to_permutation_of_
         }
     } else if (up_to_permutation_of_n && up_to_permutation_of_m) {
         if (condition == NONE) {
-            // pre O(n^2)
+            // pre O(n * min(n, m))
             // O(1)
             vector<vector<Mod>> p(n + 1);
             p[0] = {1};
-            for (int i = 1; i <= n; ++i) {
+            for (ull i = 1; i <= n; ++i) {
                 p[i].resize(i + 1);
-                for (int j = 1; j < i; ++j) {
+                for (ull j = 1; j <= min(i, m); ++j) {
                     p[i][j] = p[i - j][min(j, i - j)] + p[i][j - 1];
-                    // cout << "p[" << i << "][" << j << "] = " << p[i][j] << endl;
                 }
-                p[i][i] = Mod(1) + p[i][i - 1];
-                // cout << "p[" << i << "][" << i << "] = " << p[i][i] << endl;
             }
             return p[n][min(m, n)];
         } else if (condition == INJECTIVE) {
