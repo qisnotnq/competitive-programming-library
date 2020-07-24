@@ -19,7 +19,7 @@ std::vector<Item> enumerate_items(const std::vector<Item> &items, const ull capa
         std::vector<Item> a1;
         for (size_t i = 0; i < N0; ++i) {
             ull w = a0[i].first + weight;
-            if (w > capacity) continue;
+            if (w > capacity) break;
             ull v = a0[i].second + value;
             a1.emplace_back(w, v);
         }
