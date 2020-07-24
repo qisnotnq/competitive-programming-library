@@ -1,35 +1,10 @@
-#include <bits/stdc++.h>
+#include <map> // std::map
+#include <vector> // std::vector
 
-#ifdef DEBUG
-#define PRINT(x)\
-    cout<<"func "<<__func__<<": line "<<__LINE__<<": "<<#x<<" = "<<(x)<<endl;
-#define PRINTA(a,first,last)\
-    cout<<"func "<<__func__<<": line "<<__LINE__<<": "<<#a<<"["<<(first)<<", "<<(last)<<")"<<endl;\
-    for (int i=(first);i<(last);++i){cout<<#a<<"["<<i<<"] = "<<(a)[i]<<endl;}
-#define PRINTP(p)\
-    cout<<"func "<<__func__<<": line "<<__LINE__<<": "<<#p<<" = ("<<(p.first)<<", "<<(p.second)<<")"<<endl;
-#define PRINTI(a,i)\
-    cout<<"func "<<__func__<<": line "<<__LINE__<<": "<<#a<<"["<<#i<<"] = "<<#a<<"["<<(i)<<"] = "<<(a)[i]<<endl;
-#else
-#define PRINT(x)
-#define PRINTA(a,first,last)
-#define PRINTP(p)
-#define PRINTI(a,i)
-#endif
+std::vector<int> linear_sieve_prime(int N) {
 
-#define FOR(i,a,b) for (int i=(a);i<(b);++i)
-#define RFOR(i,a,b) for (int i=(b)-1;i>=(a);--i)
-#define REP(i,n) for (int i=0;i<(n);++i)
-#define RREP(i,n) for (int i=(n)-1;i>=0;--i)
-#define all(a) (a).begin(),(a).end()
-#define rall(a) (a).rbegin(),(a).rend()
-
-using namespace std;
-
-vector<int> linear_sieve(int N) {
-
-    vector<bool> is_prime(N, true);
-    vector<int> primes;
+    std::vector<bool> is_prime(N, true);
+    std::vector<int> primes;
     
     for (int i = 2; i < N; ++i) {
         if (is_prime[i]) {
@@ -50,11 +25,34 @@ vector<int> linear_sieve(int N) {
     return primes;
 }
 
-vector<map<int, int>> linear_sieve_factorize(int N) {
+std::vector<int> naive_prime(int N) {
 
-    vector<bool> is_prime(N, true);
-    vector<int> primes;
-    vector<map<int, int>> factors(N);
+    std::vector<int> primes = {2};
+
+    for (int n = 3; n < N; n += 2) {
+        bool is_prime = true;
+        for (int p: primes) {
+            if (p * p > n) {
+                break;
+            }
+            if (n % p == 0) {
+                is_prime = false;
+                break;
+            }
+        }
+        if (is_prime) {
+            primes.push_back(n);
+        }
+    }
+
+    return primes;
+}
+
+std::vector<std::map<int, int>> linear_sieve_factorize(int N) {
+
+    std::vector<bool> is_prime(N, true);
+    std::vector<int> primes;
+    std::vector<std::map<int, int>> factors(N);
     
     for (int i = 2; i < N; ++i) {
         if (is_prime[i]) {
@@ -78,11 +76,11 @@ vector<map<int, int>> linear_sieve_factorize(int N) {
     return factors;
 }
 
-vector<int> linear_sieve_totient(int N) {
+std::vector<int> linear_sieve_totient(int N) {
 
-    vector<bool> is_prime(N, true);
-    vector<int> primes;
-    vector<int> totient(N, 0);
+    std::vector<bool> is_prime(N, true);
+    std::vector<int> primes;
+    std::vector<int> totient(N, 0);
 
     totient[1] = 1;
 
@@ -118,12 +116,11 @@ int gcd(int a, int b) {
     return a;
 }
 
-vector<int> naive_totient(int N) {
-    vector<int> totient(N, 0);
+std::vector<int> naive_totient(int N) {
+    std::vector<int> totient(N, 0);
     totient[1] = 1;
     for (int i = 2; i < N; ++i) {
         for (int j = 1; j <= i; ++j) {
-            printf("gcd(%d, %d) = %d\n", i, j, gcd(i, j));
             if (gcd(i, j) == 1) {
                 ++totient[i];
             }
@@ -132,11 +129,90 @@ vector<int> naive_totient(int N) {
     return totient;
 }
 
+std::vector<std::vector<int>> linear_sieve_divisors(int N) {
+
+    std::vector<bool> is_prime(N, true);
+    std::vector<int> primes;
+    std::vector<std::vector<int>> divisors(N);
+
+    divisors[1] = {1};
+    
+    for (int i = 2; i < N; ++i) {
+        if (is_prime[i]) {
+            primes.push_back(i);
+            divisors[i] = {1, i};
+        }
+        for (int p: primes) {
+            int n = i * p;
+            if (n >= N) {
+                break;
+            }
+            is_prime[n] = false;
+            divisors[n] = divisors[i];
+            if (i % p == 0) {
+                int j = i / p;
+                int pow_p = p;
+                while (j % p == 0) {
+                    j /= p;
+                    pow_p *= p;
+                }
+                for (int d: divisors[i]) {
+                    if (d % pow_p == 0) {
+                        divisors[n].push_back(d * p);
+                    }
+                }
+                break;
+            } else {
+                for (int d: divisors[i]) {
+                    divisors[n].push_back(d * p);
+                }
+            }
+        }
+    }
+
+    return divisors;
+}
+
+vector<int> number_of_divisors(int N) {
+ 
+    vector<bool> is_prime(N, true);
+    vector<int> primes;
+    vector<int> n_divisors(N);
+    
+    n_divisors[1] = 1;
+    
+    FOR(i, 2, N + 1) {
+        if (is_prime[i]) {
+            primes.pb(i);
+            n_divisors[i] = 2;
+        }
+        for (int p: primes) {
+            ll n = i * p;
+            if (n >= N) {
+                break;
+            }
+            is_prime[n] = false;
+            if (i % p == 0) {
+                ll j = i / p;
+                ll e = 1;
+                while (j % p == 0) {
+                    j /= p;
+                    e += 1;
+                }
+                n_divisors[n] = n_divisors[i] / (e + 1) * (e + 2);
+                break;
+            } else {
+                n_divisors[n] = n_divisors[i] * 2;
+            }
+        }
+    }
+                
+    return n_divisors;
+}
+
 int main() {
 
-    auto primes = linear_sieve(100);
-    PRINTA(primes, 0, primes.size());
-
+    /*
     auto totient = naive_totient(100);
     PRINTA(totient, 0, totient.size());
 
@@ -156,6 +232,32 @@ int main() {
         }
         printf("\n");
     }
+
+    int N;
+    cin >> N;
+    */
+
+    // enumerate primes
+    /*
+    auto start = chrono::system_clock::now();
+    auto primes = linear_sieve_prime(N);
+    auto end = chrono::system_clock::now();
+    chrono::duration<double> diff = end - start;
+    cout << "liearn_sieve_prime(" << N << ") took time" << diff.count() << endl;
+
+    start = chrono::system_clock::now();
+    auto primes2 = naive_prime(N);
+    end = chrono::system_clock::now();
+    diff = end - start;
+    cout << "naive_prime(" << N << ") took time" << diff.count() << endl;
+
+    assert(primes.size() == primes2.size());
+
+    for (int i = 0; i < primes.size(); ++i) {
+        assert(primes[i] == primes2[i]);
+        //printf("primes[%d] = %d\n", i, primes[i]);
+    }
+    */
 
     return 0;
 }
