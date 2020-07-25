@@ -1,11 +1,17 @@
 #include <iostream> // std::ostream
+#include <vector> // std::vector
 
 template <class T, T M>
 class modulo {
 public:
     T data;
 
-    modulo(T data = 0) : data(data % M) {
+    modulo(T data = 0) {
+        T r = data % M;
+        if (r < 0) {
+            r += M;
+        }
+        this->data = r;
     }
 
     modulo operator+(const modulo &x) const {
@@ -71,5 +77,50 @@ private:
             n >>= 1;
         }
         return result;
+    }
+};
+
+template <class T, T M>
+struct combinatorics {
+
+    using Mod = modulo<T, M>;
+
+    T N;
+    std::vector<Mod> factorial;
+    std::vector<Mod> inv_factorial;
+
+    combinatorics(T N) : N(N), factorial(N + 1), inv_factorial(N + 1) {
+        factorial[0] = 1;
+        for (T i = 1; i <= N; ++i) {
+            factorial[i] = factorial[i - 1] * i;
+        }
+        inv_factorial[N] = factorial[N].inv();
+        for (T i = N; i >= 1; --i) {
+            inv_factorial[i - 1] = inv_factorial[i] * i;
+        }
+    }
+
+    Mod P(T n, T k) {
+        if (0 <= k && k <= n) {
+            return factorial[n] * inv_factorial[k];
+        } else {
+            return 0;
+        }
+    }
+
+    Mod C(T n, T k) {
+        if (0 <= k && k <= n) {
+            return factorial[n] * inv_factorial[k] * inv_factorial[n - k];
+        } else {
+            return 0;
+        }
+    }
+
+    Mod H(T n, T k) {
+        if (n == 0 && k == 0) {
+            return 1;
+        } else {
+            return C(n + k - 1, k);
+        }
     }
 };
