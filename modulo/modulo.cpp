@@ -102,7 +102,7 @@ struct combinatorics {
 
     Mod P(T n, T k) {
         if (0 <= k && k <= n) {
-            return factorial[n] * inv_factorial[k];
+            return factorial[n] * inv_factorial[n - k];
         } else {
             return 0;
         }
