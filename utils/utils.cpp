@@ -3,6 +3,7 @@
 
 #include <algorithm> // std::sort
 #include <stdexcept> // std::runtime_error
+#include <utility> // std::pair, std::make_pair
 #include <vector> // std::vector
 
 
@@ -15,6 +16,25 @@ std::vector<size_t> argsort(const std::vector<T> &a) {
         result[i] = i;
     }
     std::sort(result.begin(), result.end(), [&](size_t i, size_t j) { return a[i] < a[j]; });
+
+    return result;
+}
+
+// get_rank(a) == argsort(argsort(a))
+template <class T>
+std::vector<size_t> get_rank(const std::vector<T> &a) {
+
+    size_t N = a.size();
+
+    std::vector<std::pair<T, size_t>> v(N);
+    REP(i, N) v[i] = std::make_pair(a[i], i);
+    std::sort(v.begin(), v.end());
+
+    std::vector<size_t> result(N);
+    for (size_t i = 0; i < N; ++i) {
+        auto [x, r] = v[i];
+        result[r] = i;
+    }
 
     return result;
 }
