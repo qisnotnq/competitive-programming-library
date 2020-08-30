@@ -4,24 +4,20 @@ using namespace std;
 
 class disjoint_set {
 private:
-    std::vector<size_t> parents;
-    std::vector<size_t> ranks;
-    std::vector<size_t> component_sizes;
+    // if vertex i is a root, r[i] = -(size of the component),
+    // eles r[i] = root of i.
+    std::vector<int> r;
 public:
     const size_t n_vertices;
     size_t n_components;
 
-    disjoint_set(size_t n_vertices) : n_vertices(n_vertices), parents(n_vertices), ranks(n_vertices, 0), n_components(n_vertices), component_sizes(n_vertices, 1) {
-        for (size_t i = 0; i < n_vertices; ++i) {
-            parents[i] = i;
-        }
-    }
+    disjoint_set(size_t n_vertices) : n_vertices(n_vertices), n_components(n_vertices), r(n_vertices, -1) { }
 
     size_t root(size_t x) {
-        if (parents[x] == x) {
+        if (r[x] < 0) {
             return x;
         } else {
-            return parents[x] = root(parents[x]);
+            return r[x] = root(r[x]);
         }
     }
 
@@ -31,15 +27,12 @@ public:
         if (x == y) {
             return;
         }
-        if (ranks[x] < ranks[y]) {
-            parents[x] = y;
-            component_sizes[y] += component_sizes[x];
+        if (r[x] < r[y]) {
+            r[x] += r[y];
+            r[y] = r[x];
         } else {
-            parents[y] = x;
-            component_sizes[x] += component_sizes[y];
-            if (ranks[x] == ranks[y]) {
-                ++ranks[x];
-            }
+            r[y] += r[x];
+            r[x] = r[y];
         }
         --n_components;
     }
@@ -49,6 +42,6 @@ public:
     }
 
     size_t component_size(size_t x) {
-        return component_sizes[root(x)];
+        return -r[root(x)];
     }
 };
