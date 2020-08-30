@@ -4,8 +4,8 @@ using namespace std;
 
 class disjoint_set {
 private:
-    // if vertex i is a root, r[i] = -(size of the component),
-    // eles r[i] = root of i.
+    // if vertex i is a root, r[i] = -(size of the component which has i),
+    // eles r[i] = the root of i.
     std::vector<int> r;
 public:
     const size_t n_vertices;
@@ -29,10 +29,10 @@ public:
         }
         if (r[x] < r[y]) {
             r[x] += r[y];
-            r[y] = r[x];
+            r[y] = x;
         } else {
             r[y] += r[x];
-            r[x] = r[y];
+            r[x] = y;
         }
         --n_components;
     }
