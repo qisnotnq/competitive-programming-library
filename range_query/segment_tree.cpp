@@ -2,7 +2,7 @@
 #define SEGMENT_TREE_CPP
 
 #include <functional> // std::function
-#include <iterator>
+#include <iterator> // std::distance
 #include <vector> // std::vector
 
 unsigned long long clp(unsigned long long x) {
