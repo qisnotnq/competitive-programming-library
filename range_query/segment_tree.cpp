@@ -2,6 +2,7 @@
 #define SEGMENT_TREE_CPP
 
 #include <functional> // std::function
+#include <iterator>
 #include <vector> // std::vector
 
 unsigned long long clp(unsigned long long x) {
@@ -24,25 +25,25 @@ template <class T>
 class segment_tree {
 private:
     const size_t n;
-    const T UNIT;
     const std::function<T(const T&, const T&)> f;
+    const T UNIT;
     std::vector<T> a;
 public:
     segment_tree(size_t size, std::function<T(const T&, const T&)> f, T UNIT) : n(clp(size)), UNIT(UNIT), f(f) {
         a.resize(2 * n - 1, UNIT);
     }
-    /*
+
     template <class Iterator>
-    segment_tree(Iterator first, Iterator last, int UNIT, function<T(T, T)> f) : n(clp(distance(first, last))), UNIT(UNIT), f(f)
-    {
-        size_t size = distance(first, last);
-        a = new T[2 * n - 1];
-        fill(a, a + 2 * n - 1, UNIT);
-        for (size_t i = 0; i < size; ++i) {
-            a[n - 1 + i] = *(first + i);
+    segment_tree(Iterator first, Iterator last, std::function<T(const T&, const T&)> f, T UNIT) : n(clp(std::distance(first, last))), f(f), UNIT(UNIT) {
+        size_t size = std::distance(first, last);
+        a.resize(2 * n - 1, UNIT);
+        for (size_t i = n - 1; first != last; ++i) {
+            a[i] = *(first++);
+        }
+        for (int i = n - 2; i >= 0; --i) {
+            a[i] = f(a[2 * i + 1], a[2 * i + 2]);
         }
     }
-    */
 
     void update(size_t i, const T &x) {
         i += n - 1;
