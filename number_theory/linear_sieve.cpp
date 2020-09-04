@@ -210,6 +210,39 @@ vector<int> number_of_divisors(int N) {
     return n_divisors;
 }
 
+ll count_primes(ll N) {
+
+    ll sqrt_N = 0;
+    while (sqrt_N * sqrt_N <= N) {
+        ++sqrt_N;
+    }
+    --sqrt_N;
+
+    vector<ll> primes;
+    vector<bool> is_prime(sqrt_N + 1, true);
+    ll count_primes = N - 1;
+    for (ll i = 2; i <= N; ++i) {
+        if (i <= sqrt_N && is_prime[i]) {
+            primes.push_back(i);
+        }
+        for (ll p : primes) {
+            ll n = i * p;
+            if (n > N) {
+                break;
+            }
+            if (n <= sqrt_N) {
+                is_prime[n] = false;
+            }
+            --count_primes;
+            if (i % p == 0) {
+                break;
+            }
+        }
+    }
+
+    return count_primes;
+}
+
 int main() {
 
     /*
