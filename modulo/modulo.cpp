@@ -46,6 +46,10 @@ public:
         return data = (data * x.inv().data) % M;
     }
 
+    modulo operator-() {
+        return data ? M - data ? 0;
+    }
+
     modulo inv() const {
         return _pow(M - 2);
     }
