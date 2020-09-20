@@ -41,8 +41,8 @@ public:
     void update(size_t first, size_t last, T x) {
         fenwick_1.update(first, x);
         fenwick_1.update(last, -x);
-        fenwick_2.update(first, first * x);
-        fenwick_2.update(last, -last * x);
+        fenwick_2.update(first, x * first);
+        fenwick_2.update(last, x * (-last));
     }
 
     T query(size_t last) const {
