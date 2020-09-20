@@ -14,40 +14,65 @@ public:
         this->data = r;
     }
 
+    modulo _modulo(const T data) const {
+        return modulo { data };
+    }
+
     modulo operator+(const modulo &x) const {
-        return modulo(data + x.data);
+        T y = data + x.data;
+        if (y >= M) {
+            y -= M;
+        }
+        return _modulo(y);
     }
 
     modulo operator-(const modulo &x) const {
-        return modulo(data + (M - x.data));
+        T y;
+        if (data >= x.data) {
+            y = data - x.data;
+        } else {
+            y = data + M - x.data;
+        }
+        return _modulo(y);
     }
 
     modulo operator*(const modulo &x) const {
-        return modulo(data * x.data);
+        return _modulo(data * x.data % M);
     }
 
     modulo operator/(const modulo &x) const {
-        return modulo(data * x.inv().data);
+        return _modulo(data * x.inv().data % M);
     }
 
     modulo operator+=(const modulo &x) {
-        return data = (data + x.data) % M;
+        data += x.data;
+        if (data >= M) {
+            data -= M;
+        }
+        return this;
     }
 
     modulo operator-=(const modulo &x) {
-        return data = (data + (M - x.data)) % M;
+        if (data >= x.data) {
+            data -= x.data;
+        } else {
+            data += M - x.data;
+        }
+        return this;
     }
 
     modulo operator*=(const modulo &x) {
-        return data = (data * x.data) % M;
+        data = (data * x.data) % M;
+        return this;
     }
 
     modulo operator/=(const modulo &x) {
-        return data = (data * x.inv().data) % M;
+        data = (data * x.inv().data) % M;
+        return this;
     }
 
     modulo operator-() {
-        return data ? M - data ? 0;
+        return _modulo(data ? M - data : 0);
     }
 
     modulo inv() const {
