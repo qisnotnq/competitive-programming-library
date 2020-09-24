@@ -2,19 +2,33 @@
 #define FENWICK_TREE_CPP
 
 #include <functional> // std::function
+#include <istream> // std::istream
+#include <iterator> // std::distance
 #include <vector> // std::vector
 
 template<class T>
 class fenwick_tree {
 private:
-    const size_t size;
     const std::function<T(T, T)> f;
     const T unit;
     std::vector<T> a;
 public:
-    fenwick_tree(size_t size, std::function<T(T, T)> f, T unit) : size(size), f(f), unit(unit), a(size, unit) { }
+    fenwick_tree(size_t size, std::function<T(T, T)> f, T unit) : f(f), unit(unit), a(size, unit) { }
+
+    template <class Iterator>
+    fenwick_tree(Iterator first, Iterator last, std::function<T(T, T)> f, T unit) : f(f), unit(unit), a(std::distance(first, last), unit) {
+        size_t size = a.size();
+        for (size_t i = 0; i < size; ++i) {
+            a[i] = f(a[i], *(first++));
+            size_t j = i | (i + 1);
+            if (j < size) {
+                a[j] = f(a[j], a[i]);
+            }
+        }
+    }
 
     void update(size_t i, T x) {
+        size_t size = a.size();
         for (size_t j = i; j < size; j |= j + 1) {
             a[j] = f(a[j], x);
         }
@@ -26,6 +40,20 @@ public:
             result = f(result, a[--j]);
         }
         return result;
+    }
+
+    friend std::istream& operator>>(std::istream &is, fenwick_tree &ft) {
+        size_t size = ft.a.size();
+        for (size_t i = 0; i < size; ++i) {
+            T x;
+            is >> x;
+            ft.a[i] = ft.f(ft.a[i], x);
+            size_t j = i | (i + 1);
+            if (j < size) {
+                ft.a[j] = ft.f(ft.a[j], ft.a[i]);
+            }
+        }
+        return is;
     }
 };
 
