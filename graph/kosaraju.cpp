@@ -53,7 +53,7 @@ std::vector<size_t> kosaraju(const Graph &g) {
         for (const Edge &e: g_op.edges_from(u)) {
             size_t v = e.to();
             if (!used[v]) {
-                dfs(v, component_index);
+                dfs(v);
             }
         }
     };
