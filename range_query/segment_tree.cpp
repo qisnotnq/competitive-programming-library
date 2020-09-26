@@ -24,19 +24,16 @@ unsigned long long clp(unsigned long long x) {
 template <class T>
 class segment_tree {
 private:
+    const size_t size;
     const size_t n;
     const std::function<T(const T&, const T&)> f;
     const T UNIT;
     std::vector<T> a;
 public:
-    segment_tree(size_t size, std::function<T(const T&, const T&)> f, T UNIT) : n(clp(size)), UNIT(UNIT), f(f) {
-        a.resize(2 * n - 1, UNIT);
-    }
+    segment_tree(size_t size, std::function<T(const T&, const T&)> f, T UNIT) : size(size), n(clp(size)), f(f), UNIT(UNIT), a(2 * n - 1, UNIT) { }
 
     template <class Iterator>
-    segment_tree(Iterator first, Iterator last, std::function<T(const T&, const T&)> f, T UNIT) : n(clp(std::distance(first, last))), f(f), UNIT(UNIT) {
-        size_t size = std::distance(first, last);
-        a.resize(2 * n - 1, UNIT);
+    segment_tree(Iterator first, Iterator last, std::function<T(const T&, const T&)> f, T UNIT) : size(std::distance(first, last)), n(clp(size)), f(f), UNIT(UNIT), a(2 * n - 1, UNIT) {
         for (size_t i = n - 1; first != last; ++i) {
             a[i] = *(first++);
         }
@@ -69,6 +66,17 @@ public:
             T vr = query(query_first, query_last, k * 2 + 2, node_mid, node_last);
             return f(vl, vr);
         }
+    }
+
+    friend std::istream& operator>>(std::istream &is, segment_tree &st) {
+        const size_t m = st.n - 1 + st.size;
+        for (size_t i = st.n - 1; i < m; ++i) {
+            is >> st.a[i];
+        }
+        for (int i = st.n - 2; i >= 0; --i) {
+            st.a[i] = st.f(st.a[2 * i + 1], st.a[2 * i + 2]);
+        }
+        return is;
     }
 };
 
