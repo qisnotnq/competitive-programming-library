@@ -37,7 +37,7 @@ public:
         for (size_t i = n; first != last; ++i) {
             a[i] = *(first++);
         }
-        for (int i = n - 2; i >= 0; --i) {
+        for (size_t i = n - 1; i; --i) {
             _merge(i);
         }
     }
@@ -75,7 +75,7 @@ public:
         for (size_t i = st.n; i < m; ++i) {
             is >> st.a[i];
         }
-        for (int i = st.n - 1; i; --i) {
+        for (size_t i = st.n - 1; i; --i) {
             st._merge(i);
         }
         return is;
