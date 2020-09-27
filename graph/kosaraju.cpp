@@ -110,7 +110,7 @@ std::vector<std::vector<size_t>> kosaraju2(const Graph &g) {
     for (int i = n - 1; i >= 0; --i) {
         size_t u = post_order[i];
         if (!used[u]) {
-            scc.push_back(std::vector<size_t>());
+            scc.emplace_back();
             dfs(u);
         }
     }
