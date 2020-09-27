@@ -70,7 +70,7 @@ struct graph {
         m_edges[v1].push_back(v0);
     }
 
-    inline std::vector<edge_type> edges_from(size_t v) const {
+    inline const std::vector<edge_type>& edges_from(size_t v) const {
         return m_edges[v];
     }
 };
