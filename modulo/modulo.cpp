@@ -49,7 +49,7 @@ public:
         if (data >= M) {
             data -= M;
         }
-        return this;
+        return *this;
     }
 
     modulo operator-=(const modulo &x) {
@@ -58,17 +58,17 @@ public:
         } else {
             data += M - x.data;
         }
-        return this;
+        return *this;
     }
 
     modulo operator*=(const modulo &x) {
         data = (data * x.data) % M;
-        return this;
+        return *this;
     }
 
     modulo operator/=(const modulo &x) {
         data = (data * x.inv().data) % M;
-        return this;
+        return *this;
     }
 
     modulo operator-() {
