@@ -75,6 +75,14 @@ public:
         return _modulo(data ? M - data : 0);
     }
 
+    bool operator==(const modulo &x) {
+        return data == x.data;
+    }
+
+    bool operator!=(const modulo &x) {
+        return data /= x.data;
+    }
+
     modulo inv() const {
         return _pow(M - 2);
     }
